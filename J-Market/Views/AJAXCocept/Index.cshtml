@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>AJAX Concept</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.TextBox("TXTN" ,0)
+
+    <button id="btnCalcular">
+        Calcular
+    </button>
+    <br />
+    <div id="lblMessage"></div>
+
+}
+
+@section Scripts {
+    
+    <script type="text/javascript">
+
+        $(function () {
+            $("#btnCalcular").on("click", function () {
+
+                $.ajax({
+                    // Accion que queremos que haga
+                    type: "POST",
+
+                    // LLamada al metodo que queremos realizar 
+                    url: "@Url.Action("JsonFactorial")",
+                    // n es el parametro que resive y #TNT es el nombre del valor a mandar
+                    data: { n: $('#TXTN').val() },
+                    datatype: 'json',
+                    // No guarda los valores en cache
+                    cache: false
+                })
+                    // Al ejecutar un metodo ajax suceden 2 cosas 
+                .success(function (data) {
+
+                    $("#lblMessage").html(data.Factorial);
+
+                })
+                .error(function (xhr, ajaxOptions, throwError) {
+                    $("#lblMessage").html("An Error was Ocurred");
+
+
+
+                });
+                return false;;
+                
+            });
+            
+        });
+
+    </script>
+    }
